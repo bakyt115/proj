@@ -1,0 +1,15 @@
+cache
+log
+.idea
+*.pyc
+config/databases.yml
+config/doctrine
+lib/filter/doctrine/base
+lib/form/doctrine/base
+lib/model/doctrine/base
+bin/update.sh
+web/uploads
+web/temp
+.sass-cache
+*Thumbs.db
+
