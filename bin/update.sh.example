@@ -1,0 +1,54 @@
+#! /bin/bash
+case $1 in
+    "b"*)
+        echo "exec"
+        cd /var/www/bakyt/proj
+        ;;
+esac
+
+
+echo "Build models and forms"
+php symfony doctrine:build-schema --application="frontend"
+php symfony doctrine:build-model --application="frontend"
+php symfony doctrine:build-form --application="frontend"
+php symfony doctrine:build-filter --application="frontend"
+
+# echo "Remove bad models"
+rm -rfv lib/model/doctrine/base/BaseSfGuardForgotPassword.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardGroup.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardGroupPermission.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardPermission.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardRememberKey.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardUser.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardUserGroup.class.php
+rm -rfv lib/model/doctrine/base/BaseSfGuardUserPermission.class.php
+
+rm -rfv lib/model/doctrine/SfGuardForgotPassword.class.php
+rm -rfv lib/model/doctrine/SfGuardForgotPasswordTable.class.php
+rm -rfv lib/model/doctrine/SfGuardGroup.class.php
+rm -rfv lib/model/doctrine/SfGuardGroupPermission.class.php
+rm -rfv lib/model/doctrine/SfGuardGroupPermissionTable.class.php
+rm -rfv lib/model/doctrine/SfGuardGroupTable.class.php
+rm -rfv lib/model/doctrine/SfGuardPermission.class.php
+rm -rfv lib/model/doctrine/SfGuardPermissionTable.class.php
+rm -rfv lib/model/doctrine/SfGuardRememberKey.class.php
+rm -rfv lib/model/doctrine/SfGuardRememberKeyTable.class.php
+rm -rfv lib/model/doctrine/SfGuardUser.class.php
+rm -rfv lib/model/doctrine/SfGuardUserGroup.class.php
+rm -rfv lib/model/doctrine/SfGuardUserGroupTable.class.php
+rm -rfv lib/model/doctrine/SfGuardUserPermission.class.php
+rm -rfv lib/model/doctrine/SfGuardUserPermissionTable.class.php
+rm -rfv lib/model/doctrine/SfGuardUserTable.class.php
+
+echo "Clear cache"
+php symfony cc
+
+echo "Fix permissions"
+rm -rfv log cache
+mkdir -v log cache
+
+find . -type d -exec chmod 0755 {} \;
+find . -type f -exec chmod 0644 {} \;
+
+chown -R bakyt:admin ./*
+chown -R www-data:www-data log cache web/cache
