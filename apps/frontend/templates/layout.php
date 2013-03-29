@@ -9,6 +9,9 @@
     <?php include_javascripts() ?>
   </head>
   <body>
+    <div class="log-in">
+        <?php include_component('sfGuardAuth', 'signin_form')?>
+    </div>
     <?php echo $sf_content ?>
   </body>
 </html>
