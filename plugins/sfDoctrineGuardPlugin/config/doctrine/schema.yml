@@ -77,6 +77,9 @@ sfGuardUser:
       default: false
     last_login:
       type: timestamp
+    organization_id:
+      type: integer
+      notnull: true
   indexes:
     is_active_idx:
       fields: [is_active]
@@ -93,7 +96,10 @@ sfGuardUser:
       foreign: permission_id
       refClass: sfGuardUserPermission
       foreignAlias: Users
-
+    Organization:
+      class: Organization
+      local: organization_id
+      foreign: id
 sfGuardUserPermission:
   options:
     symfony:
